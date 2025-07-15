@@ -5,10 +5,19 @@ import PackageDescription
 
 let package = Package(
     name: "AgileOctopus",
+    platforms: [
+        .macOS(.v10_15),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/swift-server/async-http-client.git", .upToNextMajor(from: "1.26.0")),
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .executableTarget(
-            name: "AgileOctopus"),
+            name: "AgileOctopus",
+            dependencies: [
+                .product(name: "AsyncHTTPClient", package: "async-http-client"),
+            ]),
     ]
 )
