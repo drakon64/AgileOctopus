@@ -1,37 +1,30 @@
 import AsyncHTTPClient
 import Foundation
-import NIOCore
-import NIOFoundationCompat
 
-struct Comic: Codable {
-    var num: Int
-    var title: String
-    var day: String
-    var month: String
-    var year: String
-    var img: String
-    var alt: String
-    var news: String
-    var link: String
-    var transcript: String
+struct StandardUnitRates: Decodable {
+    let results: [Result]
 }
 
-struct GetJSON {
-    static func main() async throws {
-        let httpClient = HTTPClient(eventLoopGroupProvider: .singleton)
-        do {
-            let request = HTTPClientRequest(url: "https://xkcd.com/info.0.json")
-            let response = try await httpClient.execute(request, timeout: .seconds(30))
-            print("HTTP head", response)
-            let body = try await response.body.collect(upTo: 1024 * 1024)  // 1 MB
-            // we use an overload defined in `NIOFoundationCompat` for `decode(_:from:)` to
-            // efficiently decode from a `ByteBuffer`
-            let comic = try JSONDecoder().decode(Comic.self, from: body)
-            dump(comic)
-        } catch {
-            print("request failed:", error)
-        }
-        // it is important to shutdown the httpClient after all requests are done, even if one failed
-        try await httpClient.shutdown()
+struct Result: Decodable {
+    let valueIncVat: Double
+    let validFrom, validTo: Date
+
+    enum CodingKeys: String, CodingKey {
+        case valueIncVat = "value_inc_vat"
+        case validFrom = "valid_from"
+        case validTo = "valid_to"
     }
 }
+
+let decoder = JSONDecoder()
+decoder.dateDecodingStrategy = .iso8601
+
+let httpClient = HTTPClient(eventLoopGroupProvider: .singleton)
+
+let request = HTTPClientRequest(url: "https://api.octopus.energy/v1/products/AGILE-FLEX-22-11-25/electricity-tariffs/E-1R-AGILE-FLEX-22-11-25-C/standard-unit-rates/?period_from=2023-03-26T00:00Z&period_to=2023-03-26T01:29Z")
+let response = try await httpClient.execute(request, timeout: .seconds(INT64_MAX))
+let body = try await response.body.collect(upTo: Int(INT_MAX))
+httpClient.shutdown()
+
+let standardUnitRates = try decoder.decode(StandardUnitRates.self, from: body)
+print(standardUnitRates)
