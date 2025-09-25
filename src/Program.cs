@@ -1,16 +1,35 @@
 ﻿using System.Net.Http.Json;
 using AgileOctopus;
 
-var httpClient = new HttpClient();
+string validFrom;
+string validTo;
 
-var standardUnitRates = await httpClient.GetFromJsonAsync<StandardUnitRates>(
-    "https://api.octopus.energy/v1/products/AGILE-FLEX-22-11-25/electricity-tariffs/E-1R-AGILE-FLEX-22-11-25-C/standard-unit-rates/?period_from=2023-03-26T00:00Z&period_to=2023-03-26T01:29Z",
-    SourceGenerationContext.Default.StandardUnitRates
-);
+{
+    var now = DateTime.Now.AddDays(1);
 
-httpClient.Dispose();
+    validFrom = now.Date.ToUniversalTime().ToString("O");
 
-foreach (var rate in standardUnitRates!.Results)
+    validTo = now.Add(new TimeSpan(hours: 23, minutes: 59, seconds: 0))
+        .ToUniversalTime()
+        .ToString("O");
+}
+
+StandardUnitRates standardUnitRates;
+
+{
+    var httpClient = new HttpClient();
+
+    standardUnitRates = (
+        await httpClient.GetFromJsonAsync<StandardUnitRates>(
+            $"https://api.octopus.energy/v1/products/AGILE-24-10-01/electricity-tariffs/E-1R-AGILE-24-10-01-A/standard-unit-rates/?period_from={validFrom}&period_to={validTo}",
+            SourceGenerationContext.Default.StandardUnitRates
+        )
+    )!;
+
+    httpClient.Dispose();
+}
+
+foreach (var rate in standardUnitRates.Results)
 {
     Console.WriteLine(rate);
 }
