@@ -29,7 +29,7 @@ StandardUnitRates standardUnitRates;
     httpClient.Dispose();
 }
 
-foreach (var rate in standardUnitRates.Results)
+foreach (var rate in standardUnitRates.Results.Reverse())
 {
     Console.WriteLine(rate);
 }
