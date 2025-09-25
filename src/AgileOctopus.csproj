@@ -7,6 +7,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <PublishTrimmed>true</PublishTrimmed>
-    <!--<PublishAot>true</PublishAot>-->
+    <PublishAot>true</PublishAot>
   </PropertyGroup>
 </Project>
