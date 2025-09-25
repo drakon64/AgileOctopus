@@ -8,6 +8,8 @@ var standardUnitRates = await httpClient.GetFromJsonAsync<StandardUnitRates>(
     SourceGenerationContext.Default.StandardUnitRates
 );
 
+httpClient.Dispose();
+
 foreach (var rate in standardUnitRates!.Results)
 {
     Console.WriteLine(rate);
