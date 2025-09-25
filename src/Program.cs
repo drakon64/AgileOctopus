@@ -9,7 +9,8 @@ string validTo;
 
     validFrom = now.Date.ToUniversalTime().ToString("O");
 
-    validTo = now.Add(new TimeSpan(hours: 23, minutes: 59, seconds: 0))
+    validTo = now
+        .Date.Add(new TimeSpan(hours: 23, minutes: 59, seconds: 0))
         .ToUniversalTime()
         .ToString("O");
 }
