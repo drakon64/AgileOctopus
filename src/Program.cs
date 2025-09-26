@@ -33,7 +33,6 @@ var rates = standardUnitRates.Results.Reverse().ToArray();
 var hourlyRates = new List<Rate>();
 
 for (var i = 0; i < standardUnitRates.Count - 1; i++)
-{
     hourlyRates.Add(
         new Rate
         {
@@ -42,7 +41,6 @@ for (var i = 0; i < standardUnitRates.Count - 1; i++)
             ValidTo = rates[i + 1].ValidTo,
         }
     );
-}
 
 Rate? cheapestRate = null;
 
@@ -51,9 +49,7 @@ foreach (
         cheapestRate is null || rate.ValueExcVat < cheapestRate.ValueExcVat
     )
 )
-{
     cheapestRate = rate;
-}
 
 cheapestRate!.ValidFrom = cheapestRate.ValidFrom.ToLocalTime();
 cheapestRate.ValidTo = cheapestRate.ValidTo.ToLocalTime();
