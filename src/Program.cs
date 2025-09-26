@@ -29,7 +29,27 @@ StandardUnitRates standardUnitRates;
     httpClient.Dispose();
 }
 
-foreach (var rate in standardUnitRates.Results.Reverse())
+var rates = standardUnitRates.Results.Reverse().ToArray();
+
+var hourlyRates = new Dictionary<string, decimal>();
+
+for (var i = 0; i < standardUnitRates.Count - 1; i++)
 {
-    Console.WriteLine(rate);
+    hourlyRates.Add(
+        $"{rates[i].ValidFrom} - {rates[i + 1].ValidTo}",
+        rates[i].ValueExcVat + rates[i + 1].ValueExcVat
+    );
 }
+
+decimal? cheapestRate = null;
+
+foreach (
+    var hourlyRate in hourlyRates.Where(hourlyRate =>
+        hourlyRate.Value < cheapestRate || cheapestRate is null
+    )
+)
+{
+    cheapestRate = hourlyRate.Value;
+}
+
+Console.WriteLine(cheapestRate);
