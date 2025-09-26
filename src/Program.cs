@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Json;
-using AgileOctopus;
+using AgileOctopus.Octopus;
 
 string validFrom;
 string validTo;

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace AgileOctopus;
+namespace AgileOctopus.Octopus;
 
 internal class StandardUnitRates
 {
