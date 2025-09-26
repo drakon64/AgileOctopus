@@ -30,22 +30,32 @@ StandardUnitRates standardUnitRates;
 }
 
 var rates = standardUnitRates.Results.Reverse().ToArray();
-
-var hourlyRates = new Dictionary<string, decimal>();
+var hourlyRates = new List<Rate>();
 
 for (var i = 0; i < standardUnitRates.Count - 1; i++)
 {
     hourlyRates.Add(
-        $"{rates[i].ValidFrom} - {rates[i + 1].ValidTo}",
-        rates[i].ValueExcVat + rates[i + 1].ValueExcVat
+        new Rate
+        {
+            ValueExcVat = rates[i].ValueExcVat + rates[i + 1].ValueExcVat,
+            ValidFrom = rates[i].ValidFrom,
+            ValidTo = rates[i + 1].ValidTo,
+        }
     );
 }
 
-var cheapestRate = decimal.MaxValue;
+Rate? cheapestRate = null;
 
-foreach (var hourlyRate in hourlyRates.Where(hourlyRate => hourlyRate.Value < cheapestRate))
+foreach (
+    var rate in hourlyRates.Where(rate =>
+        cheapestRate is null || rate.ValueExcVat < cheapestRate.ValueExcVat
+    )
+)
 {
-    cheapestRate = hourlyRate.Value;
+    cheapestRate = rate;
 }
+
+cheapestRate!.ValidFrom = cheapestRate.ValidFrom.ToLocalTime();
+cheapestRate.ValidTo = cheapestRate.ValidTo.ToLocalTime();
 
 Console.WriteLine(cheapestRate);

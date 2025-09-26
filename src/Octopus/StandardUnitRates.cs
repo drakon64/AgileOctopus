@@ -6,13 +6,6 @@ internal class StandardUnitRates
 {
     public required byte Count { get; init; }
     public required Rate[] Results { get; init; }
-
-    internal record Rate
-    {
-        public required decimal ValueExcVat { get; init; }
-        public required DateTime ValidFrom { get; init; }
-        public required DateTime ValidTo { get; init; }
-    }
 }
 
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]
