@@ -41,13 +41,9 @@ for (var i = 0; i < standardUnitRates.Count - 1; i++)
     );
 }
 
-decimal? cheapestRate = null;
+var cheapestRate = decimal.MaxValue;
 
-foreach (
-    var hourlyRate in hourlyRates.Where(hourlyRate =>
-        hourlyRate.Value < cheapestRate || cheapestRate is null
-    )
-)
+foreach (var hourlyRate in hourlyRates.Where(hourlyRate => hourlyRate.Value < cheapestRate))
 {
     cheapestRate = hourlyRate.Value;
 }
