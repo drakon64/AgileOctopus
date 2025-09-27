@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json.Serialization;
+using AgileOctopus.GoogleCloud;
 using AgileOctopus.Octopus;
 
 string validFrom;
@@ -55,3 +57,8 @@ cheapestRate!.ValidFrom = cheapestRate.ValidFrom.ToLocalTime();
 cheapestRate.ValidTo = cheapestRate.ValidTo.ToLocalTime();
 
 Console.WriteLine(cheapestRate);
+
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]
+[JsonSerializable(typeof(StandardUnitRates))]
+[JsonSerializable(typeof(Token))]
+internal partial class SourceGenerationContext : JsonSerializerContext;
