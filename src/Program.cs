@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json.Serialization;
-using AgileOctopus.GoogleCloud;
 using AgileOctopus.Octopus;
 
 var now = DateTime.Now.AddDays(1).Date;
@@ -51,5 +50,4 @@ Console.WriteLine(cheapestRate);
 
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]
 [JsonSerializable(typeof(StandardUnitRates))]
-[JsonSerializable(typeof(Token))]
 internal partial class SourceGenerationContext : JsonSerializerContext;
