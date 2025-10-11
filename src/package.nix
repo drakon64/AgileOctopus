@@ -3,12 +3,14 @@
   lib,
   buildDotnetModule,
   dotnetCorePackages,
+  stdenv,
+  dockerTools,
   ...
 }:
 let
   fs = lib.fileset;
 in
-buildDotnetModule {
+buildDotnetModule (finalAttrs: {
   pname = "AgileOctopus";
   version = "0.0.1";
 
@@ -28,18 +30,26 @@ buildDotnetModule {
   };
 
   projectFile = "AgileOctopus.csproj";
-  nugetDeps = ./deps.json;
 
   dotnet-sdk = dotnetCorePackages.sdk_9_0;
-  dotnet-runtime = null;
 
   executables = [ "AgileOctopus" ];
 
+  # Native AOT
+  dotnet-runtime = null;
   selfContainedBuild = true;
+  nativeBuildInputs = [ stdenv.cc ];
 
   meta = {
     license = lib.licenses.eupl12;
     mainProgram = "AgileOctopus";
     maintainers = with lib.maintainers; [ drakon64 ];
   };
-}
+
+  passthru.docker = dockerTools.buildLayeredImage {
+    name = "AgileOctopus";
+    tag = "latest";
+
+    config.Cmd = [ (pkgs.lib.getExe finalAttrs.finalPackage) ];
+  };
+})
