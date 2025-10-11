@@ -1,6 +1,6 @@
 namespace AgileOctopus.Octopus;
 
-internal record Rate
+internal sealed record Rate
 {
     public required decimal ValueExcVat { get; init; }
     public required DateTime ValidFrom { get; set; }

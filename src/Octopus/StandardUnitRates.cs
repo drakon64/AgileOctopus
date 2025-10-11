@@ -1,6 +1,6 @@
 namespace AgileOctopus.Octopus;
 
-internal class StandardUnitRates
+internal sealed class StandardUnitRates
 {
     public required byte Count { get; init; }
     public required Rate[] Results { get; init; }
