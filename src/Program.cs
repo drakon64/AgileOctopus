@@ -1,7 +1,5 @@
 ﻿using System.Net.Http.Json;
-using System.Text;
 using AgileOctopus.Octopus;
-using AgileOctopus.Twilio;
 
 var now = DateTime.Now.AddDays(1).Date;
 
@@ -46,42 +44,5 @@ cheapestRate!.ValidFrom = cheapestRate.ValidFrom.ToLocalTime();
 cheapestRate.ValidTo = cheapestRate.ValidTo.ToLocalTime();
 
 Console.WriteLine(cheapestRate);
-
-var accountSid =
-    Environment.GetEnvironmentVariable("TWILIO_ACCOUNT_SID")
-    ?? throw new InvalidOperationException("TWILIO_ACCOUNT_SID is null");
-
-var apiKey =
-    Environment.GetEnvironmentVariable("TWILIO_API_KEY")
-    ?? throw new InvalidOperationException("TWILIO_API_KEY is null");
-
-var apiKeySecret = Convert.ToBase64String(
-    Encoding
-        .GetEncoding("ISO-8859-1")
-        .GetBytes(
-            Environment.GetEnvironmentVariable("TWILIO_API_KEY_SECRET")
-                ?? throw new InvalidOperationException("TWILIO_API_KEY_SECRET is null")
-        )
-);
-
-await httpClient.SendAsync(
-    new HttpRequestMessage
-    {
-        RequestUri = new Uri(
-            $"https://api.twilio.com/2010-04-01/Accounts/{accountSid}/Messages.json"
-        ),
-        Content = JsonContent.Create(
-            new Message
-            {
-                From = "",
-                To = "",
-                Body = "",
-            },
-            TwilioSourceGenerationContext.Default.Message
-        ),
-        Headers = { { "Authorization", $"Basic {apiKey}:{apiKeySecret}" } },
-        Method = HttpMethod.Post,
-    }
-);
 
 httpClient.Dispose();
