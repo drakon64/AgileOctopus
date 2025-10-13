@@ -19,7 +19,7 @@ var standardUnitRates = (
 )!;
 
 var rates = standardUnitRates.Results.Reverse().ToArray();
-var hourlyRates = new List<Rate>();
+var hourlyRates = new List<Rate>(standardUnitRates.Count - 1);
 
 for (var i = 0; i < standardUnitRates.Count - 1; i++)
     hourlyRates.Add(
