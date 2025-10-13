@@ -25,7 +25,7 @@ for (var i = 0; i < standardUnitRates.Count - 1; i++)
     hourlyRates.Add(
         new Rate
         {
-            ValueExcVat = rates[i].ValueExcVat + rates[i + 1].ValueExcVat,
+            ValueExcVat = (rates[i].ValueExcVat + rates[i + 1].ValueExcVat) / 2,
             ValidFrom = rates[i].ValidFrom,
             ValidTo = rates[i + 1].ValidTo,
         }
