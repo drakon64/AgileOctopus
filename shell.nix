@@ -3,10 +3,8 @@
 }:
 pkgs.mkShellNoCC {
   packages = with pkgs; [
-    graphviz
     lon
     nixfmt-rfc-style
-    opentofu
   ];
 
   passthru.lon = pkgs.mkShellNoCC {
