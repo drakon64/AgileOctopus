@@ -10,7 +10,7 @@
 let
   fs = lib.fileset;
 in
-buildDotnetModule (finalAttrs: {
+buildDotnetModule {
   pname = "AgileOctopus";
   version = "0.0.1";
 
@@ -45,11 +45,4 @@ buildDotnetModule (finalAttrs: {
     mainProgram = "AgileOctopus";
     maintainers = with lib.maintainers; [ drakon64 ];
   };
-
-  passthru.docker = dockerTools.buildLayeredImage {
-    name = "AgileOctopus";
-    tag = "latest";
-
-    config.Cmd = [ (pkgs.lib.getExe finalAttrs.finalPackage) ];
-  };
-})
+}
