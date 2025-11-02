@@ -4,7 +4,6 @@
   buildDotnetModule,
   dotnetCorePackages,
   stdenv,
-  dockerTools,
   ...
 }:
 let
@@ -22,8 +21,6 @@ buildDotnetModule {
         (lib.fileset.maybeMissing ./bin)
         (lib.fileset.maybeMissing ./config)
         (lib.fileset.maybeMissing ./obj)
-
-        (lib.fileset.maybeMissing ./deps.json)
         ./package.nix
       ]
     );
@@ -31,13 +28,13 @@ buildDotnetModule {
 
   projectFile = "AgileOctopus.csproj";
 
-  dotnet-sdk = dotnetCorePackages.sdk_9_0;
+  dotnet-sdk = dotnetCorePackages.sdk_10_0;
+  dotnet-runtime = null;
 
   executables = [ "AgileOctopus" ];
 
-  # Native AOT
-  dotnet-runtime = null;
   selfContainedBuild = true;
+
   nativeBuildInputs = [ stdenv.cc ];
 
   meta = {
