@@ -9,7 +9,7 @@ var validTo = now.Add(new TimeSpan(hours: 23, minutes: 59, seconds: 0))
     .ToUniversalTime()
     .ToString("O");
 
-var httpClient = new HttpClient();
+using var httpClient = new HttpClient();
 
 var standardUnitRates = (
     await httpClient.GetFromJsonAsync<StandardUnitRates>(
@@ -44,5 +44,3 @@ cheapestRate!.ValidFrom = cheapestRate.ValidFrom.ToLocalTime();
 cheapestRate.ValidTo = cheapestRate.ValidTo.ToLocalTime();
 
 Console.WriteLine(cheapestRate);
-
-httpClient.Dispose();
